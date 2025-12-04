@@ -7,7 +7,8 @@ const {
     ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
-    Partials
+    Partials,
+    PermissionsBitField
 } = require("discord.js");
 
 const client = new Client({
@@ -41,7 +42,7 @@ const EMOJI6_ID = "1446232913766121563";
 
 // Images
 const TOP_ATTACHMENT_URL = "https://cdn.discordapp.com/attachments/1442579419175846009/1446191371131158710/darksideroles-ezgif.com-video-to-gif-converter.gif?ex=6933162b&is=6931c4ab&hm=41ebd19fde284f69d134bd8000a08c9df27d673f4b1c6eece7286bf053420202&";
-const EMBED_IMAGE_URL   = "https://media.discordapp.net/attachments/1442579419175846009/1446173219819225188/ERANGEL-DARKSIDE5-ezgif.com-video-to-gif-converter.gif?ex=69330544&is=6931b3c4&hm=e46ec2e47a9a865184a1d8e637f877ed9291290a4f825f4737e183fe9990ab47&=&width=550&height=44";
+const EMBED_IMAGE_URL   = "https://cdn.discordapp.com/attachments/1442579419175846009/1446173219819225188/ERANGEL-DARKSIDE5-ezgif.com-video-to-gif-converter.gif";
 // -------------------------------------------------- //
 
 client.once("ready", () => {
@@ -52,6 +53,11 @@ client.on("messageCreate", async (message) => {
     if (message.author.bot) return;
 
     if (message.content === "!roles") {
+
+        // 🔐 Restrict command to users with Manage Roles permission
+        if (!message.member.permissions.has(PermissionsBitField.Flags.ManageRoles)) {
+            return message.reply("<a:Flicker:1444512741770662070> You are not allowed to use this command.");
+        }
 
         const embed = new EmbedBuilder()
             .setAuthor({
@@ -73,7 +79,6 @@ client.on("messageCreate", async (message) => {
             .setThumbnail("https://cdn.discordapp.com/attachments/1442574799229681835/1446179148740690024/Untitleddesign12-ezgif.com-gif-maker.gif")
             .setColor(5999554);
 
-        // 6 buttons (2 rows)
         const row1 = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
                 .setCustomId(ROLE1)
